@@ -1,260 +1,270 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <title>Permutasi Cipher - by Reza Apriansyah Putri</title>
+  <meta charset="utf-8" />
+  <title>Permutasi Cipher — Dark Pink Edition + Penjelasan</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
-    body {
-      font-family: "Segoe UI", sans-serif;
-      background: #1a1a1a;
-      color: #f8c8dc;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
+    :root {
+      --pink-dark1: #5a1f36;
+      --pink-dark2: #7a2948;
+      --pink-dark3: #9a3b61;
+      --accent: #ff6aa6;
+      --bg1: #2a0d18;
+      --bg2: #3a1422;
+      --text: #fbe8f2;
     }
-    .container {
+    * { box-sizing: border-box; margin:0; padding:0 }
+    html, body {
+      height: 100%;
+      width: 100%;
+      font-family: "Poppins", sans-serif;
+      background: linear-gradient(160deg, var(--bg1), var(--bg2));
+      color: var(--text);
+    }
+    body {
       display: flex;
-      flex-direction: row;
-      gap: 30px;
-      width: 95%;
-      height: 90%;
-      background: #2a2a2a;
-      border-radius: 20px;
-      box-shadow: 0 0 25px rgba(255, 182, 193, 0.3);
+      align-items: center;
+      justify-content: center;
+    }
+    .app {
+      width: 100%;
+      height: 100%;
+      display: grid;
+      grid-template-columns: 400px 1fr 300px;
+      gap: 20px;
       padding: 20px;
     }
-    .left, .right {
-      flex: 1;
+    .panel, .visual, .explain {
+      background: rgba(90,31,54,0.9);
+      border-radius: 16px;
+      padding: 16px;
       display: flex;
       flex-direction: column;
-      align-items: center;
-      overflow-y: auto;
+      border: 1px solid rgba(255,106,166,0.3);
     }
-    h1 {
-      color: #ff99cc;
-      margin-bottom: 20px;
-    }
-    input, button {
-      font-size: 16px;
-      padding: 10px;
-      margin: 8px;
-      border-radius: 10px;
-      border: none;
-      text-align: center;
-    }
-    input {
-      width: 80%;
-      border: 2px solid #ff99cc;
-      background: #3a3a3a;
-      color: #ffd6e8;
-    }
-    button {
-      cursor: pointer;
-      font-weight: bold;
-      color: #2a2a2a;
-      transition: 0.3s;
-    }
-    .encrypt { background: #ff99cc; }
-    .decrypt { background: #ff99cc; }
-    .copy { background: #ff99cc; }
-    button:hover {
-      opacity: 0.85;
-    }
-    .result {
-      margin-top: 15px;
+    .title {
+      font-weight: 700;
       font-size: 18px;
-      color: #ffe6f2;
-      font-weight: bold;
-      text-align: center;
+      color: #ffb6d9;
+      margin-bottom: 12px;
+    }
+    textarea, input {
+      width: 100%;
       padding: 10px;
       border-radius: 10px;
-      background: #3a3a3a;
-      width: 90%;
+      border: 1px solid #9a3b61;
+      margin-bottom: 10px;
+      font-size: 14px;
+      background: #3a1422;
+      color: var(--text);
+    }
+    textarea::placeholder, input::placeholder { color: #c788a5; }
+    .btn {
+      border: none;
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-weight: 600;
+      cursor: pointer;
+      margin: 4px;
+      transition: background 0.2s;
+    }
+    .btn-pink { background: linear-gradient(180deg,var(--pink-dark2),var(--pink-dark3)); color:#fff; }
+    .btn-pink:hover { background: linear-gradient(180deg,var(--pink-dark3),var(--accent)); }
+    .btn-clear { background: transparent; border:1px dashed var(--accent); color: var(--accent); }
+    .result-box {
+      padding: 10px;
+      border: 1px solid #9a3b61;
+      border-radius: 10px;
+      background: #2a0d18;
+      margin-top: 10px;
+      min-height: 60px;
+      max-height: 100px;       /* hasil tidak keluar kotak */
+      overflow-y: auto;        /* bisa scroll kalau panjang */
+      white-space: pre-wrap;   /* wrap teks panjang */
+      word-break: break-word;
+      flex-shrink: 0;
+    }
+    .visual {
+      overflow-y: auto;        /* scroll kalau banyak */
+    }
+    .timeline {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 12px;
+      justify-content: flex-start;
+      align-items: flex-start;
     }
     .block-group {
-      margin-bottom: 30px;
-      padding: 15px;
-      border: 1px solid #ff99cc;
+      background: #3a1422;
+      padding: 8px;
+      border: 1px solid #9a3b61;
       border-radius: 12px;
-      background: #3a3a3a;
-      width: 90%;
+      flex: 1 1 180px;
+      max-width: 220px;
     }
     .block-title {
-      margin-bottom: 8px;
-      font-weight: bold;
+      font-size: 12px;
+      margin-bottom: 4px;
+      font-weight: 600;
       color: #ffb6d9;
     }
     .block {
       display: flex;
-      margin: 5px 0;
-      justify-content: center;
       flex-wrap: wrap;
+      gap: 6px;
     }
     .char {
-      background: #4a4a4a;
-      border: 2px solid #ff99cc;
+      padding: 6px 8px;
       border-radius: 8px;
-      padding: 8px 12px;
-      margin: 5px;
-      font-size: 18px;
-      font-weight: bold;
-      color: #ffd6e8;
-      transition: all 0.4s ease;
+      background: #7a2948;
+      border: 1px solid #9a3b61;
+      font-weight: 600;
+      color: #fff;
+      flex: 0 0 auto;
     }
-    .highlight {
-      background: #ff99cc !important;
-      color: #2a2a2a !important;
+    .char.highlight {
+      background: var(--accent);
+      color: #fff;
     }
+    .explain {
+      overflow-y: auto;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+    .explain h3 {
+      font-size: 16px;
+      color: #ffb6d9;
+      margin-bottom: 10px;
+    }
+    .explain p { margin-bottom: 10px; }
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="left">
-      <h1>Permutasi Cipher</h1>
-      <input type="text" id="inputText" placeholder="Masukkan teks">
-      <input type="text" id="key" placeholder="Key (contoh: 3,1,4,2)" value="3,1,4,2">
-      <button class="encrypt" onclick="encrypt()">Enkripsi</button>
-      <button class="decrypt" onclick="decrypt()">Dekripsi</button>
-      <button class="copy" onclick="copyText()">Copy Hasil</button>
-      <div class="result" id="result">Hasil akan muncul di sini</div>
+  <div class="app">
+    <!-- Panel kiri -->
+    <div class="panel">
+      <div class="title">Permutasi Cipher</div>
+      <textarea id="inputText" placeholder="Teks..."></textarea>
+      <input id="key" type="text" value="3,1,4,2" placeholder="Key contoh: 3,1,4,2"/>
+      <input id="padChar" type="text" value="X" maxlength="1"/>
+      <div>
+        <button class="btn btn-pink" onclick="encrypt()">Enkripsi</button>
+        <button class="btn btn-pink" onclick="decrypt()">Dekripsi</button>
+        <button class="btn btn-clear" onclick="clearAll()">Clear</button>
+      </div>
+      <div class="result-box" id="result">— hasil akan muncul di sini —</div>
     </div>
-    <div class="right">
-      <h1>Visualisasi Proses</h1>
-      <div id="visual"></div>
+
+    <!-- Kolom visualisasi -->
+    <div class="visual">
+      <div class="title">Visualisasi</div>
+      <div id="visual" class="timeline"></div>
+    </div>
+
+    <!-- Kolom penjelasan -->
+    <div class="explain">
+      <h3>Penjelasan Permutasi Cipher</h3>
+      <p>
+        Permutasi cipher adalah salah satu bentuk cipher klasik yang bekerja dengan cara
+        <b>mengubah urutan karakter</b> dalam plaintext berdasarkan sebuah kunci tertentu.
+      </p>
+      <p>
+        Kunci biasanya berupa <i>permutasi angka</i>, misalnya <code>3,1,4,2</code>.  
+        Angka-angka tersebut menunjukkan urutan baru dari karakter-karakter di dalam blok.
+      </p>
+      <p>
+        Contoh: plaintext <code>ABCD</code> dengan key <code>3,1,4,2</code> akan diubah menjadi <code>CADB</code>.  
+        Proses ini berulang untuk setiap blok sepanjang teks.
+      </p>
+      <p>
+        Saat dekripsi, digunakan <b>invers dari kunci</b> untuk mengembalikan ciphertext menjadi plaintext asli.
+      </p>
     </div>
   </div>
 
   <script>
-    let lastCipher = "";
+    const inputEl = document.getElementById("inputText");
+    const keyEl = document.getElementById("key");
+    const padEl = document.getElementById("padChar");
+    const resultEl = document.getElementById("result");
+    const visualEl = document.getElementById("visual");
 
-    function permuteEncrypt(text, key) {
-      text = text.replace(/ /g, "").toUpperCase();
-      let n = key.length;
-      while (text.length % n !== 0) text += "X";
-      let cipher = "";
-      let visualDiv = document.getElementById("visual");
-      visualDiv.innerHTML = "";
-
-      for (let i = 0; i < text.length; i += n) {
-        let block = text.substring(i, i+n).split("");
-
-        let group = document.createElement("div");
-        group.className = "block-group";
-
-        let title1 = document.createElement("div");
-        title1.className = "block-title";
-        title1.innerText = "Blok asli:";
-        group.appendChild(title1);
-
-        let row1 = document.createElement("div");
-        row1.className = "block";
-        block.forEach(ch => {
-          let span = document.createElement("div");
-          span.className = "char";
-          span.textContent = ch;
-          row1.appendChild(span);
-        });
-        group.appendChild(row1);
-
-        let title2 = document.createElement("div");
-        title2.className = "block-title";
-        title2.innerText = "Setelah permutasi:";
-        group.appendChild(title2);
-
-        let row2 = document.createElement("div");
-        row2.className = "block";
-        key.forEach(k => {
-          let span = document.createElement("div");
-          span.className = "char highlight";
-          span.textContent = block[k-1];
-          row2.appendChild(span);
-          cipher += block[k-1];
-        });
-        group.appendChild(row2);
-
-        visualDiv.appendChild(group);
-      }
-      return cipher;
-    }
-
-    function permuteDecrypt(cipher, key) {
-      let n = key.length;
-      let text = "";
-      let inverseKey = new Array(n);
-      key.forEach((k, i) => inverseKey[k-1] = i+1);
-
-      let visualDiv = document.getElementById("visual");
-      visualDiv.innerHTML = "";
-
-      for (let i = 0; i < cipher.length; i += n) {
-        let block = cipher.substring(i, i+n).split("");
-
-        let group = document.createElement("div");
-        group.className = "block-group";
-
-        let title1 = document.createElement("div");
-        title1.className = "block-title";
-        title1.innerText = "Blok terenkripsi:";
-        group.appendChild(title1);
-
-        let row1 = document.createElement("div");
-        row1.className = "block";
-        block.forEach(ch => {
-          let span = document.createElement("div");
-          span.className = "char";
-          span.textContent = ch;
-          row1.appendChild(span);
-        });
-        group.appendChild(row1);
-
-        let title2 = document.createElement("div");
-        title2.className = "block-title";
-        title2.innerText = "Setelah invers permutasi:";
-        group.appendChild(title2);
-
-        let row2 = document.createElement("div");
-        row2.className = "block";
-        inverseKey.forEach(k => {
-          let span = document.createElement("div");
-          span.className = "char highlight";
-          span.textContent = block[k-1];
-          row2.appendChild(span);
-          text += block[k-1];
-        });
-        group.appendChild(row2);
-
-        visualDiv.appendChild(group);
-      }
-      return text;
+    function parseKey(s) {
+      return s.split(",").map(x=>parseInt(x.trim())).filter(Boolean);
     }
 
     function encrypt() {
-      let text = document.getElementById("inputText").value;
-      let key = document.getElementById("key").value.split(",").map(Number);
-      lastCipher = permuteEncrypt(text, key);
-      document.getElementById("result").innerHTML = "Hasil Enkripsi: " + lastCipher;
+      visualEl.innerHTML = "";
+      const text = inputEl.value.replace(/\s+/g,"").toUpperCase();
+      const key = parseKey(keyEl.value);
+      const pad = padEl.value || "X";
+      const n = key.length;
+      let t = text;
+      const padNeeded = (n - (t.length % n)) % n;
+      t = t + pad.repeat(padNeeded);
+      let cipher = "";
+      for (let i=0;i<t.length;i+=n){
+        const block = t.slice(i,i+n).split("");
+        renderBlock(block,key,"Blok asli","Setelah permutasi");
+        key.forEach(k=>cipher += block[k-1]||pad);
+      }
+      resultEl.textContent = cipher;
     }
 
     function decrypt() {
-      if (!lastCipher) {
-        document.getElementById("result").innerHTML = "Belum ada teks terenkripsi";
-        return;
+      visualEl.innerHTML = "";
+      const cipher = inputEl.value.replace(/\s+/g,"").toUpperCase();
+      const key = parseKey(keyEl.value);
+      const n = key.length;
+      const inv = new Array(n);
+      key.forEach((k,i)=>inv[k-1]=i+1);
+      let plain = "";
+      for (let i=0;i<cipher.length;i+=n){
+        const block = cipher.slice(i,i+n).split("");
+        renderBlock(block,inv,"Blok terenkripsi","Setelah invers");
+        inv.forEach(k=>plain += block[k-1]||"");
       }
-      let key = document.getElementById("key").value.split(",").map(Number);
-      let plain = permuteDecrypt(lastCipher, key);
-      document.getElementById("result").innerHTML = "Hasil Dekripsi: " + plain;
+      resultEl.textContent = plain;
     }
 
-    function copyText() {
-      if (!lastCipher) {
-        alert("Belum ada hasil enkripsi untuk disalin!");
-        return;
-      }
-      navigator.clipboard.writeText(lastCipher);
-      alert("Hasil enkripsi berhasil disalin ke clipboard.");
+    function renderBlock(block,keyOrder,titleA,titleB){
+      const group=document.createElement("div");
+      group.className="block-group";
+      const t1=document.createElement("div");
+      t1.className="block-title";
+      t1.textContent=titleA;
+      group.appendChild(t1);
+      const r1=document.createElement("div");
+      r1.className="block";
+      block.forEach(ch=>{
+        const d=document.createElement("div");
+        d.className="char"; d.textContent=ch;
+        r1.appendChild(d);
+      });
+      group.appendChild(r1);
+      const t2=document.createElement("div");
+      t2.className="block-title";
+      t2.textContent=titleB;
+      group.appendChild(t2);
+      const r2=document.createElement("div");
+      r2.className="block";
+      keyOrder.forEach(k=>{
+        const d=document.createElement("div");
+        d.className="char highlight";
+        d.textContent=block[k-1]||"";
+        r2.appendChild(d);
+      });
+      group.appendChild(r2);
+      visualEl.appendChild(group);
+    }
+
+    function clearAll(){
+      inputEl.value="";
+      resultEl.textContent="— hasil akan muncul di sini —";
+      visualEl.innerHTML="";
     }
   </script>
 </body>
